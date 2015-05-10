@@ -1,0 +1,169 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <meta name="Keywords" content="blog"/>
+    <meta name="Description" content="blog"/>
+    <title>Simple</title>
+    <link rel="shortcut icon" href="/static/favicon.png"/>
+    <link rel="stylesheet" type="text/css" href="/main.css" />
+</head>
+<body>
+<div class="main">
+    <div class="header">
+    	<ul id="pages">
+            <li><a href="/">home</a></li>
+            <li><a href="/#/tags">tags</a></li>
+            <li><a href="/#/archive">archive</a></li>
+    	</ul>
+    </div>
+	<div class="wrap-header">
+	<h1>
+    <a href="/" id="title"></a>
+	</h1>
+	</div>
+<div id="md" style="display: none;">
+<!-- markdown -->
+此处作为我的技术水平的起点线吧，在这条线上更新自己的所学，虽然简单，但毕竟是学渣的自学之路，也没有人教我高大上的代码。所以吧，也就这样了，望谅解。
+
+package MethodDemo01;
+
+import com.sun.swing.internal.plaf.basic.resources.basic;
+
+class A
+{	
+public A ()
+
+{
+		System.out.println("我是tell方法");
+		
+	}
+}
+class B extends A{
+	
+public B(){
+	
+		System.out.println("我重写了tell方法!!!");
+	}
+}
+public class Exendsdemo06 {
+	public static void main(String agrs[]){
+		B b =new B();
+	
+	}
+
+}
+
+此处说的是关于super关键字的使用，假如是构造类方法，则编译器将自动编写一个super类的关键字以此向上级父类传递类方法的调用，假如不是构造类方法，这需要我们自己写一个super语句。
+<!-- markdown end -->
+</div>
+<div class="entry" id="main">
+<!-- content -->
+<p>此处作为我的技术水平的起点线吧，在这条线上更新自己的所学，虽然简单，但毕竟是学渣的自学之路，也没有人教我高大上的代码。所以吧，也就这样了，望谅解。</p>
+
+<p>package MethodDemo01;</p>
+
+<p>import com.sun.swing.internal.plaf.basic.resources.basic;</p>
+
+<p>class A
+{ <br>
+public A ()</p>
+
+<p>{
+        System.out.println("我是tell方法");</p>
+
+<pre><code>}
+</code></pre>
+
+<p>}
+class B extends A{</p>
+
+<p>public B(){</p>
+
+<pre><code>    System.out.println("我重写了tell方法!!!");
+}
+</code></pre>
+
+<p>}
+public class Exendsdemo06 {
+    public static void main(String agrs[]){
+        B b =new B();</p>
+
+<pre><code>}
+</code></pre>
+
+<p>}</p>
+
+<p>此处说的是关于super关键字的使用，假如是构造类方法，则编译器将自动编写一个super类的关键字以此向上级父类传递类方法的调用，假如不是构造类方法，这需要我们自己写一个super语句。</p>
+<!-- content end -->
+</div>
+<br>
+<br>
+    <div id="disqus_thread"></div>
+	<div class="footer">
+		<p>© Copyright 2014 by isnowfy, Designed by isnowfy</p>
+	</div>
+</div>
+<script src="main.js"></script>
+<script src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Config({tex2jax: {inlineMath: [['$','$'], ["\\(", "\\)"]], processEscapes: true}});
+</script>
+<script id="content" type="text/mustache">
+    <h1>{{title}}</h1>
+    <div class="tag">
+    {{date}}
+    {{#tags}}
+    <a href="/#/tag/{{name}}">#{{name}}</a>
+    {{/tags}}
+    </div>
+</script>
+<script id="pagesTemplate" type="text/mustache">
+    {{#pages}}
+    <li>
+        <a href="{{path}}">{{title}}</a>
+    </li>
+    {{/pages}}
+</script>
+<script>
+$(document).ready(function() {
+    $.ajax({
+        url: "main.json",
+        type: "GET",
+        dataType: "json",
+        success: function(data) {
+            $("#title").html(data.name);
+            var pagesTemplate = Hogan.compile($("#pagesTemplate").html());
+            var pagesHtml = pagesTemplate.render({"pages": data.pages});
+            $("#pages").append(pagesHtml);
+            //path
+            var path = "此为技术水平线.html";
+            //path end
+            var now = 0;
+            for (var i = 0; i < data.posts.length; ++i)
+                if (path == data.posts[i].path)
+                    now = i;
+            var post = data.posts[now];
+            var tmp = post.tags.split(" ");
+            var tags = [];
+            for (var i = 0; i < tmp.length; ++i)
+                if (tmp[i].length > 0)
+                    tags.push({"name": tmp[i]});
+            var contentTemplate = Hogan.compile($("#content").html());
+            var contentHtml = contentTemplate.render({"title": post.title, "tags": tags, "date": post.date});
+            $("#main").prepend(contentHtml);
+            if (data.disqus_shortname.length > 0) {
+                var disqus_shortname = data.disqus_shortname;
+                (function() {
+                    var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+                    dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+                    (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+                })();
+            }
+        }
+    });
+});
+</script>
+</body>
+</html>
